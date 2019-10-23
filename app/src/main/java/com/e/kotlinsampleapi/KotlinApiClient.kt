@@ -11,6 +11,11 @@ class KotlinApiClient {
 
     companion object {
 
+        val okHttpClient = OkHttpClient.Builder()
+            .readTimeout(300, TimeUnit.SECONDS)
+            .connectTimeout(300, TimeUnit.SECONDS)
+            .build()
+
         private fun getRetrofit(Url:String):Retrofit {
             return Retrofit.Builder()
                 .addCallAdapterFactory(
@@ -18,8 +23,11 @@ class KotlinApiClient {
                 .addConverterFactory(
                     GsonConverterFactory.create())
                 .baseUrl(Url)
+                .client(okHttpClient)
                 .build()
         }
+
+
 
         fun getApiData():Retrofit{
             val retrofitApi = getRetrofit(URLHelper.BASE_URL + URLHelper.SUB_URL)
